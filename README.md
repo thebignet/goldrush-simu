@@ -1,0 +1,4 @@
+goldrush-simu
+=============
+
+Goldrush Simulator
