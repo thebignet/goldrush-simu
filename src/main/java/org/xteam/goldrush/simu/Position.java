@@ -26,5 +26,10 @@ public class Position {
 	public boolean equals(Object o) {
 		return ((Position)o).x == x && ((Position)o).y == y;
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + x + "," + y + ")";
+	}
 
 }

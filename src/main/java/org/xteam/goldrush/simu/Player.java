@@ -1,37 +1,32 @@
 package org.xteam.goldrush.simu;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 public class Player {
 
-	private File executableFile;
 	private int playerId;
 	
-	private Process process;
+	private PlayerConnection playerConnection;
 	private String name;
 	private BufferedReader reader;
-	private OutputStreamWriter writer;
+	private Writer writer;
 	private Position position;
 	private Position startposition;
 	private Direction direction = Direction.EAST;
 	private int goldInHand = 0;
 	private int collectedGold = 0;
 
-	public Player(File playerExecutable, int playerId) {
-		this.executableFile = playerExecutable;
+	public Player(PlayerConnection playerConnection, int playerId) {
+		this.playerConnection = playerConnection;
 		this.playerId = playerId;
 	}
 
 	public void start(GoldRushMap map) throws IOException {
-		process = new ProcessBuilder(this.executableFile.getAbsolutePath())
-			.redirectErrorStream(true)
-			.start();
-		reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		writer = new OutputStreamWriter(process.getOutputStream());
+		playerConnection.start();
+		reader = new BufferedReader(playerConnection.getReader());
+		writer = playerConnection.getWriter();
 		
 		// Read Player name
 		name = reader.readLine();
@@ -114,8 +109,8 @@ public class Player {
 		goldInHand = 0;
 	}
 
-	public void dropGold(int dropping) {
-		this.goldInHand -= dropping;
+	public void dropGoldInHand() {
+		this.goldInHand = 0;
 	}
 
 	public void pick(int quantity) {

@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GoldRushLauncher {
@@ -22,20 +22,16 @@ public class GoldRushLauncher {
 			System.exit(1);
 		}
 		File mapFile = new File(args[0]);
-		List<File> playerExecutables = new ArrayList<File>();
-		for (int i = 1; i < args.length; ++i) {
-			playerExecutables.add(new File(args[i]));
-		}
-		new GoldRushLauncher().run(mapFile, playerExecutables);
+		new GoldRushLauncher().run(mapFile, Arrays.asList(Arrays.copyOfRange(args, 1, args.length)));
 	}
 
-	private void run(File mapFile, List<File> playerExecutables) {
+	private void run(File mapFile, List<String> playerExecutables) {
 		try {
 			
 			GoldRushMap map = readMap(mapFile);
 			
-			for (File playerExecutable : playerExecutables) {
-				Player player = new Player(playerExecutable, map.getPlayers().size());
+			for (String playerExecutable : playerExecutables) {
+				Player player = new Player(new ProcessConnection(playerExecutable), map.getPlayers().size());
 				System.out.println("Starting " + playerExecutable);
 				player.start(map);
 				System.out.println("New player '" + player.getName() + "' " + player.getPlayerId());

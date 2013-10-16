@@ -9,7 +9,7 @@ import java.util.Random;
 public class GoldRushMap {
 
 	private static final int MAX_GOLD_IN_HAND = 3;
-	
+
 	private int roundNumber = 0;
 	private Cell[][] cells;
 	private List<Player> players = new ArrayList<Player>();
@@ -37,27 +37,27 @@ public class GoldRushMap {
 	public Cell getCell(int x, int y) {
 		return cells[y][x];
 	}
-	
+
 	private Cell getCell(Position position) {
 		return getCell(position.getX(), position.getY());
 	}
-	
+
 	private void setCell(Position position, Cell cell) {
 		setCell(position.getX(), position.getY(), cell);
 	}
-	
+
 	public void setCell(int x, int y, Cell cell) {
 		this.cells[y][x] = cell;
 	}
-	
+
 	public void addListener(MapListener listener) {
-		this.listeners .add(listener);
+		this.listeners.add(listener);
 	}
 
 	public List<Player> getPlayers() {
 		return players;
 	}
-	
+
 	public int getGoldCount() {
 		return totalGoldCount;
 	}
@@ -119,10 +119,9 @@ public class GoldRushMap {
 	}
 
 	private boolean isInGame(Position pos) {
-		return pos.getX() >= 0 && pos.getX() < getWidth()
-			&& pos.getY() >= 0 && pos.getY() < getHeight();
+		return pos.getX() >= 0 && pos.getX() < getWidth() && pos.getY() >= 0 && pos.getY() < getHeight();
 	}
-	
+
 	public void move(Player player, Direction direction) {
 		Position pos = player.getPosition().add(direction.getDx(), direction.getDy());
 		if (canGoTo(player, pos, direction)) {
@@ -146,9 +145,7 @@ public class GoldRushMap {
 			}
 		}
 		Cell cell = getCell(pos.getX(), pos.getY());
-		if (cell == Cell.EMPTY
-				|| cell == Cell.MUD
-				|| cell.isGold()) {
+		if (cell == Cell.EMPTY || cell == Cell.MUD || cell.isGold()) {
 			return true;
 		}
 		if (cell == Cell.START && pos.equals(currentPlayer.getStartPosition())) {
@@ -157,11 +154,11 @@ public class GoldRushMap {
 		if (cell == Cell.STONE) {
 			Position newStonePosition = pos.add(dir.getDx(), dir.getDy());
 			return isInGame(newStonePosition)
-				&& getCell(newStonePosition.getX(), newStonePosition.getY()) == Cell.EMPTY;
+					&& getCell(newStonePosition.getX(), newStonePosition.getY()) == Cell.EMPTY;
 		}
 		return false;
 	}
-	
+
 	public void pickGold(Player player) {
 		Cell cell = getCell(player.getPosition());
 		if (cell.isGold()) {
@@ -184,10 +181,10 @@ public class GoldRushMap {
 				Cell cell = getCell(player.getPosition());
 				int inCell = player.getGoldInHand();
 				if (cell.isGold()) {
-					inCell += ((GoldCell)cell).getQuantity();
+					inCell += ((GoldCell) cell).getQuantity();
 				}
 				setCell(player.getPosition(), new GoldCell(inCell));
-				player.dropGold(player.getGoldInHand());
+				player.dropGoldInHand();
 			}
 		}
 	}
@@ -195,9 +192,8 @@ public class GoldRushMap {
 	public void shoot(Player currentPlayer) {
 		Position pos = currentPlayer.getPosition();
 		while (true) {
-			pos = pos.add(currentPlayer.getDirection().getDx(),
-					currentPlayer.getDirection().getDy());
-			if (! isInGame(pos)) {
+			pos = pos.add(currentPlayer.getDirection().getDx(), currentPlayer.getDirection().getDy());
+			if (!isInGame(pos)) {
 				return;
 			}
 			for (Player player : players) {
