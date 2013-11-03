@@ -34,25 +34,25 @@ M M M 3 M\n
 x1 y1\n
 x2 y2\n
 </pre>
-* `x y` est la position du mineur sur la carte (0≤x<largeur et 0≤y<hauteur)
-* `n` indique le nombre de joueurs se trouvant dans son entourage
-* la portion de carte entourant le mineur est transmise par un tableau de 5 sur 5 cases, la position `x y`
+  * `x y` est la position du mineur sur la carte (0≤x<largeur et 0≤y<hauteur)
+  * `n` indique le nombre de joueurs se trouvant dans son entourage
+  * la portion de carte entourant le mineur est transmise par un tableau de 5 sur 5 cases, la position `x y`
 correspondant à la case du centre, les valeurs possibles des cases sont:
-  * `X` marque la position du chariot d'un joueur
-  * `M` (Mud) de la terre
-  * `S` (Stone) une pierre
-  * `E` (Empty) du vide
-  * un nombre entier `i`, indiquant la présence de `i` diamants
-* suit une série de `n` position, une pour chaque adversaire dans l'entourage du mineur
+    * `X` marque la position du chariot d'un joueur
+    * `M` (Mud) de la terre
+    * `S` (Stone) une pierre
+    * `E` (Empty) du vide
+    * un nombre entier `i`, indiquant la présence de `i` diamants
+  * suit une série de `n` position, une pour chaque adversaire dans l'entourage du mineur
 
 4. Le programme répond par une commande:
-* `NORTH\n` pour se déplacer vers le nord
-* `SOUTH\n` pour se déplacer vers le sud
-* `EAST\n` pour se déplacer vers l'est
-* `WEST\n` pour se déplacer vers l'ouest
-* `PICK\n` pour ramasser les diamants se trouvant à la position du mineur
-* `DROP\n` pour déposer les diamants à la position du mineur
-* `SHOOT\n` pour tirer une balle de fusil
+  * `NORTH\n` pour se déplacer vers le nord
+  * `SOUTH\n` pour se déplacer vers le sud
+  * `EAST\n` pour se déplacer vers l'est
+  * `WEST\n` pour se déplacer vers l'ouest
+  * `PICK\n` pour ramasser les diamants se trouvant à la position du mineur
+  * `DROP\n` pour déposer les diamants à la position du mineur
+  * `SHOOT\n` pour tirer une balle de fusil
 
 5. La conversation entre le simulateur et le programme se poursuit en répétant les étapes 3 et 4.
 
