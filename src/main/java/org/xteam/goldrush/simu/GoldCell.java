@@ -15,7 +15,7 @@ public class GoldCell extends Cell {
 	
 	@Override
 	public String getCode() {
-		return String.valueOf(quantity - 1);
+		return String.valueOf(quantity);
 	}
 
 	public int getQuantity() {

@@ -110,7 +110,7 @@ public class GoldRushMap {
 				if (isInGame(position)) {
 					env.set(x, y, getCell(position.getX(), position.getY()));
 				} else {
-					env.set(x, y, Cell.UNDEFINED);
+					env.set(x, y, Cell.EMPTY);
 				}
 			}
 		}
@@ -212,6 +212,7 @@ public class GoldRushMap {
 	private void shootTo(Player currentPlayer, Player player) {
 		dropGold(player);
 		player.setPosition(player.getStartPosition());
+		player.setDirection(Direction.EAST);
 	}
 
 	public void initialize() {

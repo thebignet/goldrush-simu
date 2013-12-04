@@ -87,8 +87,14 @@ public class GoldRushMapTest {
 	}
 	
 	@Test
-	public void testMoveInStone() throws IOException {
+	public void testMoveInFixedStone() throws IOException {
 		GoldRushMap map = new GoldRushMap(5, 5);
+		initMap(map,
+				  "S S S S S\n"
+				+ "S - M M M\n"
+				+ "S M M M M\n"
+				+ "S M M M M\n"
+				+ "S M M M M\n");
 		for (int y = 0; y < map.getHeight(); ++y) {
 			for (int x = 0; x < map.getWidth(); ++x) {
 				Cell cell = Cell.MUD;
@@ -114,5 +120,15 @@ public class GoldRushMapTest {
 		
 		Assert.assertEquals(new Position(1, 1), player1.getStartPosition());
 		Assert.assertEquals(new Position(1, 1), player1.getPosition());
+	}
+
+	private void initMap(GoldRushMap map, String spec) {
+		int y = 0;
+		for (String line : spec.split("\n")) {
+			int x = 0;
+			for (String element : line.split(" ")) {
+				map.setCell(x, y, Cell.getFrom(element));
+			}
+		}
 	}
 }
