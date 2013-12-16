@@ -110,7 +110,7 @@ public class GoldRushMap {
 				if (isInGame(position)) {
 					env.set(x, y, getCell(position.getX(), position.getY()));
 				} else {
-					env.set(x, y, Cell.EMPTY);
+					env.set(x, y, Cell.STONE);
 				}
 			}
 		}

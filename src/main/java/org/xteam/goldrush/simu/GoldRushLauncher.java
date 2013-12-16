@@ -9,23 +9,36 @@ import java.util.List;
 
 public class GoldRushLauncher {
 
-	private static final int MAX_NUMBER_OF_ROUND = 1000;
+	
 
 	public static void main(String[] args) {
-		if (args.length < 2) {
-			System.out.println("usage: goldrush-simu <mapfile> <player-executable>+");
+		Options options = new Options();
+		int optionsIndex = 0;
+		while ((args.length - optionsIndex) > 2) {
+			if (args[optionsIndex].equals("-t")) {
+				options.duration = Integer.parseInt(args[optionsIndex+1]);
+				optionsIndex += 2;
+			} else if (args[optionsIndex].equals("-r")) {
+				options.maxRound = Integer.parseInt(args[optionsIndex+1]);
+				optionsIndex += 2;
+			} else {
+				break;
+			}
+		}
+		if ((args.length - optionsIndex) < 2) {
+			System.out.println("usage: goldrush-simu [-t <duration> | -r <maxRounds>] <mapfile> <player-executable>+");
 			System.exit(1);
 		}
 		
-		if (args.length > 5) {
+		if ((args.length - optionsIndex) > 5) {
 			System.out.println("error: too much players");
 			System.exit(1);
 		}
-		File mapFile = new File(args[0]);
-		new GoldRushLauncher().run(mapFile, Arrays.asList(Arrays.copyOfRange(args, 1, args.length)));
+		File mapFile = new File(args[optionsIndex]);
+		new GoldRushLauncher().run(options, mapFile, Arrays.asList(Arrays.copyOfRange(args, optionsIndex+1, args.length)));
 	}
 
-	private void run(File mapFile, List<String> playerExecutables) {
+	private void run(Options options, File mapFile, List<String> playerExecutables) {
 		try {
 			
 			GoldRushMap map = readMap(mapFile);
@@ -41,10 +54,10 @@ public class GoldRushLauncher {
 			GoldRushGUI gui = new GoldRushGUI(map);
 			gui.setVisible(true);
 			
-			for (int i = 0; i < MAX_NUMBER_OF_ROUND; ++i) {
+			for (int i = 0; i < options.maxRound; ++i) {
 				map.playOneRound();
 				try {
-					Thread.sleep(250);
+					Thread.sleep(options.duration);
 				} catch (InterruptedException e) {
 				}
 			}

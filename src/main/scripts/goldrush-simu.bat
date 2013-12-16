@@ -6,4 +6,4 @@ set DIRNAME=%~dp0%
 set PROGNAME=%~nx0%
 set ARGS=%*
 
-java -jar %DIRNAME%\goldrush-simu-${project.version}.jar %ARGS%
+java -jar "%DIRNAME%\goldrush-simu-${project.version}.jar" %ARGS%
