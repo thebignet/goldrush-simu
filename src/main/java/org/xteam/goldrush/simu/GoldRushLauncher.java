@@ -9,7 +9,65 @@ import java.util.List;
 
 public class GoldRushLauncher {
 
-	
+	private void mainEditor(String[] args) {
+		String mode = "HELP";
+		String path = "";
+		int width = 0;
+		int height = 0;
+		
+		if(args.length > 0) {
+			if(args[0].equals("-l")) { // load map
+				if(args.length == 2) {
+					mode = "LOAD";
+					path = args[1];
+				}
+			} else if(args[0].equals("-n"))  { // new map
+				if(args.length == 4) {
+					mode = "NEW";
+					path = args[1];
+					width = Integer.valueOf(args[2]);
+					height = Integer.valueOf(args[3]);
+				}
+			}
+		}
+		
+		File mapFile = null;
+		GoldRushLauncher simu = new GoldRushLauncher();
+		
+		switch(mode) {
+			case "LOAD":
+				mapFile = new File(path);
+				break;
+			case "NEW":
+				mapFile = new File(path);
+				try {
+					simu.createMap(mapFile, width, height);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return;
+				}
+				break;
+			default: // HELP
+				System.out.println("-d <mapFileToLoad> || -n <mapFileToCreate> <width> <height>");
+				return;
+		}
+		currentFile = path;
+
+		simu.runEditor(mapFile);
+	}
+
+	private void runEditor(final File mapFile) {
+		try {
+			
+			final GoldRushMap map = readMap(mapFile);
+			GoldRushGUI gui = new GoldRushGUI(map, true);
+			gui.setVisible(true);			
+		} catch (IOException e) {
+			System.out.println("Error: " + e.getMessage());
+			e.printStackTrace(System.out);
+		}
+	}
 
 	public static void main(String[] args) {
 		Options options = new Options();
@@ -51,7 +109,7 @@ public class GoldRushLauncher {
 				map.addPlayer(player);
 			}
 			
-			GoldRushGUI gui = new GoldRushGUI(map);
+			GoldRushGUI gui = new GoldRushGUI(map, false);
 			gui.setVisible(true);
 			
 			for (int i = 0; i < options.maxRound; ++i) {
@@ -91,5 +149,52 @@ public class GoldRushLauncher {
 			}
 		}
 	}
+
+	public void createMap(File mapFile, int width, int height) throws IOException {
+		GoldRushMap map = new GoldRushMap(width, height);
+		writeMap(map, mapFile);
+	}
 	
+	public static void writeMap(GoldRushMap map, File mapFile) throws IOException {
+		BufferedWriter writer = null;
+		try {
+			
+			writer = new BufferedWriter(new FileWriter(mapFile));
+			writer.write(map.getWidth() + " " + map.getHeight() + "\n");
+			
+			List<Position> bases = map.getBases();
+			
+			for (int y = 0; y < map.getHeight(); ++y) {
+				for (int x = 0; x < map.getWidth(); ++x) {
+					if(x > 0) {
+						writer.write(" ");
+					}
+					
+					if(containsBase(bases, x, y)) {
+						writer.write(Cell.UNDEFINED.getCode());
+					} else {
+						writer.write(map.getCell(x, y).getCode());
+					}
+				}
+				writer.write("\n");
+			}
+
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+	
+	private static boolean containsBase(List<Position> bases, int x, int y) {
+		for(Position pos : bases) {
+			if(pos.getX() == x && pos.getY() == y) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

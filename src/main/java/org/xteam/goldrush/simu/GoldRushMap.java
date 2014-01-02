@@ -73,6 +73,14 @@ public class GoldRushMap {
 		return bases.remove(new Random().nextInt(bases.size()));
 	}
 
+	public List<Position> getBases() {
+		return bases;
+	}
+
+	public void setBases(List<Position> newbases) {
+		bases = newbases;
+	}
+
 	public void playOneRound() throws IOException {
 		++roundNumber;
 		System.out.println("Round " + roundNumber);
