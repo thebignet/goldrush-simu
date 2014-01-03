@@ -1,5 +1,8 @@
 package org.xteam.goldrush.simu;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +13,7 @@ public class GoldRushMap {
 
 	private static final int MAX_GOLD_IN_HAND = 3;
 
+	private File mapFile;
 	private int roundNumber = 0;
 	private Cell[][] cells;
 	private List<Player> players = new ArrayList<Player>();
@@ -18,6 +22,11 @@ public class GoldRushMap {
 	private List<Position> bases = new ArrayList<Position>();
 
 	public GoldRushMap(int width, int height) {
+		this(null, width, height);
+	}
+
+	public GoldRushMap(File mapFile, int width, int height) {
+		this.mapFile = mapFile;
 		this.cells = new Cell[height][width];
 		for (int y = 0; y < getHeight(); ++y) {
 			for (int x = 0; x < getWidth(); ++x) {
@@ -147,12 +156,15 @@ public class GoldRushMap {
 	}
 
 	private boolean canGoTo(Player currentPlayer, Position pos, Direction dir) {
+		if (! isInGame(pos)) {
+			return false;
+		}
 		for (Player player : players) {
 			if (player != currentPlayer && player.getPosition().equals(pos)) {
 				return false;
 			}
 		}
-		Cell cell = getCell(pos.getX(), pos.getY());
+		Cell cell = getCell(pos);
 		if (cell == Cell.EMPTY || cell == Cell.MUD || cell.isGold()) {
 			return true;
 		}
@@ -238,6 +250,48 @@ public class GoldRushMap {
 				}
 			}
 		}
+	}
+	
+	public void write() throws IOException {
+		BufferedWriter writer = null;
+		try {
+			
+			writer = new BufferedWriter(new FileWriter(mapFile));
+			writer.write(getWidth() + " " + getHeight() + "\n");
+			
+			List<Position> bases = getBases();
+			
+			for (int y = 0; y < getHeight(); ++y) {
+				for (int x = 0; x < getWidth(); ++x) {
+					if(x > 0) {
+						writer.write(" ");
+					}
+					if(containsBase(bases, x, y)) {
+						writer.write(Cell.UNDEFINED.getCode());
+					} else {
+						writer.write(getCell(x, y).getCode());
+					}
+				}
+				writer.write("\n");
+			}
+			System.out.println("Map " + mapFile + " saved.");
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+	
+	private static boolean containsBase(List<Position> bases, int x, int y) {
+		for(Position pos : bases) {
+			if(pos.getX() == x && pos.getY() == y) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
