@@ -116,5 +116,19 @@ public class Player {
 	public void pick(int quantity) {
 		this.goldInHand += quantity;
 	}
-
+	
+	public void dispose() throws IOException {
+		reader.close();
+		writer.close();
+		
+		// on laisse le processus se fermer tout seul 
+		// s'il detecte la fermeture des flux.
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
+		
+		// on force la fermeture pour etre sur.
+		this.playerConnection.stop();
+	}
 }
