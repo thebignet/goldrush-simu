@@ -29,4 +29,9 @@ public class ProcessConnection implements PlayerConnection {
 	public Writer getWriter() {
 		return new OutputStreamWriter(process.getOutputStream());
 	}
+
+	@Override
+	public void stop() {
+		process.destroy();
+	}
 }

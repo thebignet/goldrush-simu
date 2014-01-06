@@ -77,6 +77,11 @@ public class GoldRushLauncher {
 				} catch (InterruptedException e) {
 				}
 			}
+			
+			for(Player player : map.getPlayers()) {
+				player.dispose();
+			}
+			
 		} catch (IOException e) {
 			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace(System.out);
