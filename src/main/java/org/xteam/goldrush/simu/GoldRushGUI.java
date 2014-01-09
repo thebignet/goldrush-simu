@@ -9,13 +9,12 @@ public class GoldRushGUI extends JFrame {
 	public GoldRushGUI(GoldRushMap map, boolean isEditMode) {
 		setTitle("GoldRush");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		if(isEditMode) {
+
+		if (isEditMode) {
 			getContentPane().add(new MapEditorPanel(map));
 		} else {
 			getContentPane().add(new MapViewPanel(map));
 		}
-
 		pack();
 	}
 

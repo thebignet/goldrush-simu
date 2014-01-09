@@ -3,7 +3,11 @@ package org.xteam.goldrush.simu;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.FilteredImageSource;
 
 import javax.swing.JPanel;
@@ -44,7 +48,24 @@ public abstract class MapPanel extends JPanel implements MapListener {
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		
 		super.paintComponent(g);
+		
+		Rectangle rect = getBounds();
+		Dimension pref = getPreferredSize();
+		
+		double ratio = Math.min(rect.getWidth() / pref.getWidth(),
+				rect.getHeight() / pref.getHeight());
+		
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setTransform(new AffineTransform(new double[] {
+				ratio, 0,
+				0, ratio
+		}));
 		
 		drawHeader(g);
 		
