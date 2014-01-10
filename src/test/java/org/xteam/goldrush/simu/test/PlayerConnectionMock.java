@@ -34,5 +34,9 @@ public class PlayerConnectionMock implements PlayerConnection {
 	public String getWritten() {
 		return writer.toString();
 	}
+
+    @Override
+    public void stop() {
+    }
 	
 }
