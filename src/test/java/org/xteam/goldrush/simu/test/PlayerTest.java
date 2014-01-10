@@ -125,4 +125,31 @@ public class PlayerTest {
 		Assert.assertEquals("10 10 0\n3 4 1\nS M M M M\nS M M M M\nS M M M M\nS M M M M\nS M M M M\n1 2\n", mock.getWritten());
 	}
 	
+	@Test
+	public void testShoot() throws IOException {
+		PlayerConnectionMock mock = new PlayerConnectionMock("");
+		
+		GoldRushMap map = new GoldRushMap(10, 10);
+		map.getBases().add(new Position(0, 0));
+		map.getBases().add(new Position(9, 9));
+		
+		Player player1 = new Player(mock, 1);
+		map.addPlayer(player1);
+		player1.setStartPosition(new Position(0, 0));
+		
+		Player player2 = new Player(mock, 2);
+		map.addPlayer(player2);
+		player2.setStartPosition(new Position(9, 9));
+		
+		player1.setPosition(new Position(0, 0));
+		player1.setDirection(Direction.EAST);
+		player2.pick(10);
+		player2.setPosition(new Position(3, 0));
+		
+		map.shoot(player1);
+		
+		Assert.assertEquals(new Position(9, 9), player2.getPosition());
+		Assert.assertEquals(0, player2.getGoldInHand());
+	}
+	
 }
