@@ -12,6 +12,8 @@ public class Cell {
 	public static final Cell START = new Cell(3, "X");
 	public static final Cell LEFT = new Cell(5, "L");
 	public static final Cell RIGHT = new Cell(6, "R");
+	public static final Cell UP = new Cell(7, "U");
+	public static final Cell DOWN = new Cell(8, "D");
 	public static final Cell UNDEFINED = new Cell(-1, "-");
 	
 	private static final Set<Cell> values = new HashSet<Cell>(

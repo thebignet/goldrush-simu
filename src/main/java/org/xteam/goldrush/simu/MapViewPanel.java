@@ -48,9 +48,11 @@ public class MapViewPanel extends MapPanel {
 	private Image getCachedPlayerImage(int playerId, Cell cell) {
 		Image[] cachedImages = playerImageCache.get(playerId);
 		if (cachedImages == null) {
-			cachedImages = new Image[2];
+			cachedImages = new Image[4];
 		    cachedImages[0] = createImage(Cell.LEFT, playerId);
 		    cachedImages[1] = createImage(Cell.RIGHT, playerId);
+		    cachedImages[2] = createImage(Cell.UP, playerId);
+		    cachedImages[3] = createImage(Cell.DOWN, playerId);
 		    playerImageCache .put(playerId, cachedImages);
 		}
 		return cachedImages[cell.getIconIndex() - Cell.LEFT.getIconIndex()];
